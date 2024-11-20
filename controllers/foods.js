@@ -19,14 +19,15 @@ router.get("/new", (req, res) => {
 // create post
 router.post("/", async (req, res) => {
   try {
-    console.log(111);
+  
     const { _id }= req.session.user;
-    console.log(req.session.user);
+    
     const todoUser = await User.findOne({ _id: _id });
     console.log(todoUser);
     const pantryData = {
-      name: req.body
+      name: req.body.name
     };
+    console.log(pantryData);
     todoUser.pantry.push(pantryData);
     await todoUser.save();
     console.log(todoUser);

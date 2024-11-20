@@ -4,7 +4,7 @@ const foodSchema = new mongoose.Schema({
   // YOU DO: Define properties of food schema
   name:{
     type:String,
-    require:true
+    require:true,
   }
 });
 
