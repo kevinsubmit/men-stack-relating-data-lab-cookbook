@@ -49,11 +49,30 @@ router.delete("/:itemId", async (req, res) => {
 
     const foodId = req.params.itemId;
     const { _id }= req.session.user;
-
     const todoUser = await User.findById(_id);
-    console.log(todoUser);
-    todoUser.deleteOne(todoUser.pantry._id == foodId);
-     await todoUser.save();
+
+    todoUser.pantry.pull(foodId);
+    await todoUser.save();
+
+    res.status(200).redirect(`/users/${req.session.user._id}/foods`);
+
+  } catch (error) {
+    console.error(error);
+    res.status(418).redirect("/");
+  }
+});
+
+// edit
+router.delete("/:itemId/edit", async (req, res) => {
+  try {
+
+    const foodId = req.params.itemId;
+    const { _id }= req.session.user;
+    const todoUser = await User.findById(_id);
+
+    todoUser.pantry.pull(foodId);
+    await todoUser.save();
+
     res.status(200).redirect(`/users/${req.session.user._id}/foods`);
 
   } catch (error) {
