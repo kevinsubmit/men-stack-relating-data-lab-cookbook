@@ -2,12 +2,20 @@
 
 const express = require("express");
 const router = express.Router();
-
 const User = require("../models/user.js");
 
-// router logic will go here - will be built later on in the lab
-router.get("/", (req, res) => {
-  res.render("foods/index.ejs");
+
+// view   get
+router.get("/", async (req, res) => {
+  try {
+    // 这是拿到用户登录的初始的pantry，后续增加将不显示在这里，有bug
+    const { pantry }= res.locals.user;
+    res.render("foods/index.ejs", { pantry: pantry });
+  } catch (error) {
+    console.error(error);
+    res.status(418).redirect("/");
+  }
+
 });
 
 router.get("/new", (req, res) => {
@@ -15,22 +23,18 @@ router.get("/new", (req, res) => {
 });
 
 
-
 // create post
 router.post("/", async (req, res) => {
   try {
-  
     const { _id }= req.session.user;
-    
     const todoUser = await User.findOne({ _id: _id });
-    console.log(todoUser);
+
     const pantryData = {
       name: req.body.name
     };
-    console.log(pantryData);
+  
     todoUser.pantry.push(pantryData);
     await todoUser.save();
-    console.log(todoUser);
     res.status(200).redirect(`/users/${req.session.user._id}/foods`);
 
   } catch (error) {
@@ -38,5 +42,34 @@ router.post("/", async (req, res) => {
     res.status(418).redirect("/");
   }
 });
+
+// delete
+router.delete("/:itemId", async (req, res) => {
+  try {
+
+    const foodId = req.params.itemId;
+    const { _id }= req.session.user;
+
+    const todoUser = await User.findById(_id);
+    console.log(todoUser);
+    todoUser.deleteOne(todoUser.pantry._id == foodId);
+     await todoUser.save();
+    res.status(200).redirect(`/users/${req.session.user._id}/foods`);
+
+  } catch (error) {
+    console.error(error);
+    res.status(418).redirect("/");
+  }
+});
+
+
+
+
+
+
+
+
+
+
 
 module.exports = router;
