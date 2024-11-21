@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>My Pantry</title>
   </head>
   <body>
     <%- include('../partials/_navbar.ejs') %>
-    <a href='/users/<%= user._id %>/foods/new'>Add new food</a>
+    <a href="/users/<%= user._id %>/foods/new">Add new food</a>
     <h1>Welcome to my Pantry</h1>
-    <% if(pantry) { %>
-      <ul>
-        <% pantry.forEach((item)=>{ %>
-          <li>
-            <span> <%= item.name %> </span>
-            <form action="/users/<%= user._id %>/foods/<%= item._id %>?_method=DELETE" method="POST">
-              <!-- Hidden field to simulate DELETE method -->
-              <input type="hidden" name="_method" value="DELETE">
-              <button type="submit">Delete</button>
-            </form>
-
-         </li> 
-       <% }) %>
-      </ul>
+    <% if(pantry.length !== 0) { %>
+    <ul>
+      <% pantry.forEach((item)=>{ %>
+      <li>
+        <span> <%= item.name %> </span>
+        <form
+          action="/users/<%= user._id %>/foods/<%= item._id %>?_method=DELETE"
+          method="POST"
+        >
+          <!-- Hidden field to simulate DELETE method -->
+          <input type="hidden" name="_method" value="DELETE" />
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+      <% }) %>
+    </ul>
     <% } else { %>
-      <p>There are no items in this pantry</p>
+    <p>There are no items in this pantry</p>
     <% } %>
   </body>
 </html>
