@@ -8,9 +8,10 @@ const User = require("../models/user.js");
 // view   get
 router.get("/", async (req, res) => {
   try {
-    // 这是拿到用户登录的初始的pantry，后续增加将不显示在这里，有bug
-    const { pantry }= res.locals.user;
-    res.render("foods/index.ejs", { pantry: pantry });
+    const { _id }= res.locals.user;
+    const todoUser = await User.findById(_id);
+    
+    res.render("foods/index.ejs", { pantry: todoUser.pantry });
   } catch (error) {
     console.error(error);
     res.status(418).redirect("/");
