@@ -72,8 +72,6 @@ router.get("/:itemId/edit", async (req, res) => {
 
     res.render("edict.ejs", { food:foodId});;
 
-
-
     const todoUser = await User.findById(_id);
 
     todoUser.pantry.pull(foodId);
