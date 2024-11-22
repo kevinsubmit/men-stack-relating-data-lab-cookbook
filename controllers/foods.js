@@ -64,11 +64,16 @@ router.delete("/:itemId", async (req, res) => {
 });
 
 // edit
-router.delete("/:itemId/edit", async (req, res) => {
+router.get("/:itemId/edit", async (req, res) => {
   try {
 
     const foodId = req.params.itemId;
     const { _id }= req.session.user;
+
+    res.render("edict.ejs", { food:foodId});;
+
+
+
     const todoUser = await User.findById(_id);
 
     todoUser.pantry.pull(foodId);
