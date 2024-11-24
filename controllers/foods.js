@@ -57,7 +57,7 @@ router.delete("/:itemId", async (req, res) => {
   }
 });
 
-// edit
+// edit  view
 router.get("/:itemId/edit", async (req, res) => {
   try {
     const itemId = req.params.itemId;
